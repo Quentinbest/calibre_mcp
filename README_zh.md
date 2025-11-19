@@ -1,0 +1,118 @@
+# Calibre MCP 服务器
+
+[English](README.md) | [中文](README_zh.md)
+
+一个 Model Context Protocol (MCP) 服务器，为您的本地 [Calibre](https://calibre-ebook.com/) 库提供接口。这允许 AI 代理（如 Claude 或 Cursor）搜索、检索详情、添加和转换 Calibre 库中的书籍。
+
+## 功能
+
+- **搜索书籍**：按标题、作者或其他元数据查询您的库。
+- **获取详情**：检索特定书籍的完整元数据，包括可用格式和文件路径。
+- **添加书籍**：从本地文件系统向您的库添加新书文件。
+- **转换书籍**：使用 Calibre 的 `ebook-convert` 工具在格式之间转换书籍（例如，EPUB 转 MOBI）。
+
+## 前置要求
+
+- **Python 3.10+**
+- **Calibre**：`calibredb` 和 `ebook-convert` 命令行工具必须已安装并在您的系统 PATH 中可访问。
+  - 在 macOS 上，这些通常位于 `/Applications/calibre.app/Contents/MacOS/`，或者链接到 `/usr/local/bin` 或 `/opt/homebrew/bin`。
+  - 通过在终端运行 `calibredb --version` 来验证安装。
+
+## 安装
+
+1. **克隆或复制仓库**：
+   确保您拥有 `calibre_mcp` 目录和 `requirements.txt`。
+
+2. **安装依赖**：
+   建议使用虚拟环境。
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## 配置
+
+如果您的 Calibre 库不在默认位置，服务器需要库的路径。
+
+- **环境变量**：`CALIBRE_LIBRARY_PATH`
+  - 示例：`/Users/username/Calibre Library`
+
+## 使用
+
+您可以直接运行服务器进行测试，但它设计为由 MCP 客户端运行。
+
+### 手动运行（用于测试）
+```bash
+# 可选：设置库路径
+export CALIBRE_LIBRARY_PATH="/path/to/your/library"
+
+# 运行服务器
+python3 server.py
+```
+
+## 客户端配置
+
+### Claude Desktop
+
+将以下内容添加到您的 `~/Library/Application Support/Claude/claude_desktop_config.json`：
+
+```json
+{
+  "mcpServers": {
+    "calibre": {
+      "command": "/path/to/python3",
+      "args": [
+        "/absolute/path/to/calibre_mcp/server.py"
+      ],
+      "env": {
+        "CALIBRE_LIBRARY_PATH": "/absolute/path/to/Calibre Library"
+      }
+    }
+  }
+}
+```
+*注意：将 `/path/to/python3` 替换为您的实际 Python 可执行文件路径（运行 `which python3` 查找）。*
+
+### Cursor
+
+1. 转到 **Cursor Settings** > **Features** > **MCP**。
+2. 点击 **Add New MCP Server**。
+3. **Name**: Calibre
+4. **Type**: stdio
+5. **Command**: `/path/to/python3` (例如 `/usr/bin/python3` 或您的 venv 路径)
+6. **Arguments**: `/absolute/path/to/calibre_mcp/server.py`
+7. **Environment Variables**:
+   - Key: `CALIBRE_LIBRARY_PATH`
+   - Value: `/absolute/path/to/Calibre Library`
+
+## 工具参考
+
+### `search_books`
+在库中搜索书籍。
+- **参数**：
+  - `query` (string): 搜索查询。支持 Calibre 搜索语法（例如 `title:Python`, `author:Asimov`）。
+- **返回**：包含 `id`, `title`, 和 `authors` 的书籍列表。
+
+### `get_book_details`
+获取特定书籍的详细元数据。
+- **参数**：
+  - `book_id` (integer): 书籍的内部 Calibre ID。
+- **返回**：包含完整元数据（格式、标签、评论等）的字典。
+
+### `add_book`
+向库添加新文件。
+- **参数**：
+  - `file_path` (string): 要添加的文件的绝对路径。
+- **返回**：包含新书籍 ID 的成功消息。
+
+### `convert_book`
+将书籍转换为不同格式。
+- **参数**：
+  - `book_id` (integer): 要转换的书籍 ID。
+  - `output_format` (string): 目标格式（例如 `mobi`, `pdf`, `docx`）。
+- **返回**：成功消息。
+
+## 故障排除
+
+- **`calibredb executable not found`**：确保包含 `calibredb` 的目录在您的系统 PATH 中，或者您正在使用正确的环境变量启动 MCP 客户端。
+- **`Book not found`**：使用 `search_books` 验证书籍 ID。
+- **转换失败**：确保已安装 `ebook-convert`。某些转换（例如受 DRM 保护的文件）可能会失败。

@@ -1,5 +1,7 @@
 # Calibre MCP Server
 
+[English](README.md) | [中文](README_zh.md)
+
 A Model Context Protocol (MCP) server that provides an interface to your local [Calibre](https://calibre-ebook.com/) library. This allows AI agents (like Claude or Cursor) to search, retrieve details, add, and convert books in your Calibre library.
 
 ## Features
