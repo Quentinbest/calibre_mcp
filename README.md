@@ -136,6 +136,68 @@ Convert a book to a different format.
   - `output_format` (string): Target format (e.g., `mobi`, `pdf`, `docx`).
 - **Returns**: Success message.
 
+### `delete_book`
+Delete a book from the library permanently.
+- **Arguments**:
+  - `book_id` (integer): The ID of the book to delete.
+- **Returns**: Status message.
+
+### `export_book`
+Export a book to a specific directory.
+- **Arguments**:
+  - `book_id` (integer): The ID of the book to export.
+  - `output_dir` (string): The destination directory.
+- **Returns**: Status message.
+
+### `update_book`
+Update book metadata (title, authors).
+- **Arguments**:
+  - `book_id` (integer): The ID of the book.
+  - `title` (string, optional): New title.
+  - `authors` (string, optional): New authors (comma-separated).
+- **Returns**: Status message.
+
+### `manage_tags`
+Add or remove tags from a book.
+- **Arguments**:
+  - `book_id` (integer): The ID of the book.
+  - `add_tags` (list of strings, optional): Tags to add.
+  - `remove_tags` (list of strings, optional): Tags to remove.
+- **Returns**: Status message.
+
+### `set_cover`
+Set the cover image for a book.
+- **Arguments**:
+  - `book_id` (integer): The ID of the book.
+  - `cover_path` (string): Absolute path to the image file.
+- **Returns**: Status message.
+
+### `get_cover_path`
+Get the local path to the book's cover image.
+- **Arguments**:
+  - `book_id` (integer): The ID of the book.
+- **Returns**: Absolute path to the cover image.
+
+### `read_book_content`
+Read the text content of a book.
+- **Arguments**:
+  - `book_id` (integer): The ID of the book.
+- **Returns**: The text content of the book (truncated if very large).
+
+### `list_categories`
+List available categories (tags, authors, series, etc.).
+- **Arguments**:
+  - `category_type` (string): The type of category (e.g., `tags`, `authors`, `series`, `publisher`).
+- **Returns**: List of category names.
+
+### `check_library`
+Run a consistency check on the library database.
+- **Returns**: The report from the check command.
+
+### `get_library_stats`
+Get statistics about the library.
+- **Returns**: Dictionary with counts of books, authors, and tags.
+
 ## Troubleshooting
 
 - **`calibredb executable not found`**: Ensure the directory containing `calibredb` is in your system PATH, or that you are launching the MCP client with the correct environment variables.
