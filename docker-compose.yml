@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  calibre-mcp:
+    build: .
+    container_name: calibre-mcp
+    volumes:
+      # Mount your local Calibre library here
+      # Format: /path/to/local/library:/library
+      - ${CALIBRE_LIBRARY_PATH:-./library}:/library
+    environment:
+      - CALIBRE_LIBRARY_PATH=/library
+    stdin_open: true # Keep stdin open for stdio communication if needed
+    tty: true        # Allocate a pseudo-TTY
+    # To use with MCP clients via stdio, you might need to run:
+    # docker run -i --rm -v /path/to/lib:/library -e CALIBRE_LIBRARY_PATH=/library calibre_mcp_image

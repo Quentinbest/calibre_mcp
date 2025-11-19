@@ -49,6 +49,31 @@ export CALIBRE_LIBRARY_PATH="/path/to/your/library"
 python3 server.py
 ```
 
+### Running with Docker
+
+1. **Build the image**:
+   ```bash
+   docker build -t calibre-mcp .
+   ```
+
+2. **Run the container**:
+   You need to mount your Calibre library into the container.
+   ```bash
+   docker run -i --rm \
+     -v "/path/to/your/library:/library" \
+     -e CALIBRE_LIBRARY_PATH="/library" \
+     calibre-mcp
+   ```
+
+   Or using Docker Compose:
+   ```bash
+   export CALIBRE_LIBRARY_PATH="/path/to/your/library"
+   docker-compose up --build
+   ```
+
+   *Note: When using with an MCP client like Claude Desktop, you will need to configure the client to run the `docker run` command. See [Docker Setup Guide](docs/docker_setup.md) for detailed configuration instructions.*
+
+
 ## Client Configuration
 
 ### Claude Desktop

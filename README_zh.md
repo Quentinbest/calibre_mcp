@@ -49,6 +49,31 @@ export CALIBRE_LIBRARY_PATH="/path/to/your/library"
 python3 server.py
 ```
 
+### 使用 Docker 运行
+
+1. **构建镜像**：
+   ```bash
+   docker build -t calibre-mcp .
+   ```
+
+2. **运行容器**：
+   您需要将 Calibre 库挂载到容器中。
+   ```bash
+   docker run -i --rm \
+     -v "/path/to/your/library:/library" \
+     -e CALIBRE_LIBRARY_PATH="/library" \
+     calibre-mcp
+   ```
+
+   或者使用 Docker Compose：
+   ```bash
+   export CALIBRE_LIBRARY_PATH="/path/to/your/library"
+   docker-compose up --build
+   ```
+
+   *注意：当与 Claude Desktop 等 MCP 客户端一起使用时，您需要配置客户端以运行 `docker run` 命令。有关详细配置说明，请参阅 [Docker 设置指南](docs/docker_setup_zh.md)。*
+
+
 ## 客户端配置
 
 ### Claude Desktop
