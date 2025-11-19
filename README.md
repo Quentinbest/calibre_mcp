@@ -111,92 +111,22 @@ Add the following to your `~/Library/Application Support/Claude/claude_desktop_c
 
 ## Tools Reference
 
-### `search_books`
-Search for books in the library.
-- **Arguments**:
-  - `query` (string): The search query. Supports Calibre search syntax (e.g., `title:Python`, `author:Asimov`).
-- **Returns**: List of books with `id`, `title`, and `authors`.
-
-### `get_book_details`
-Get detailed metadata for a specific book.
-- **Arguments**:
-  - `book_id` (integer): The internal Calibre ID of the book.
-- **Returns**: Dictionary containing full metadata (formats, tags, comments, etc.).
-
-### `add_book`
-Add a new file to the library.
-- **Arguments**:
-  - `file_path` (string): Absolute path to the file to add.
-- **Returns**: Success message with the new Book ID.
-
-### `convert_book`
-Convert a book to a different format.
-- **Arguments**:
-  - `book_id` (integer): The ID of the book to convert.
-  - `output_format` (string): Target format (e.g., `mobi`, `pdf`, `docx`).
-- **Returns**: Success message.
-
-### `delete_book`
-Delete a book from the library permanently.
-- **Arguments**:
-  - `book_id` (integer): The ID of the book to delete.
-- **Returns**: Status message.
-
-### `export_book`
-Export a book to a specific directory.
-- **Arguments**:
-  - `book_id` (integer): The ID of the book to export.
-  - `output_dir` (string): The destination directory.
-- **Returns**: Status message.
-
-### `update_book`
-Update book metadata (title, authors).
-- **Arguments**:
-  - `book_id` (integer): The ID of the book.
-  - `title` (string, optional): New title.
-  - `authors` (string, optional): New authors (comma-separated).
-- **Returns**: Status message.
-
-### `manage_tags`
-Add or remove tags from a book.
-- **Arguments**:
-  - `book_id` (integer): The ID of the book.
-  - `add_tags` (list of strings, optional): Tags to add.
-  - `remove_tags` (list of strings, optional): Tags to remove.
-- **Returns**: Status message.
-
-### `set_cover`
-Set the cover image for a book.
-- **Arguments**:
-  - `book_id` (integer): The ID of the book.
-  - `cover_path` (string): Absolute path to the image file.
-- **Returns**: Status message.
-
-### `get_cover_path`
-Get the local path to the book's cover image.
-- **Arguments**:
-  - `book_id` (integer): The ID of the book.
-- **Returns**: Absolute path to the cover image.
-
-### `read_book_content`
-Read the text content of a book.
-- **Arguments**:
-  - `book_id` (integer): The ID of the book.
-- **Returns**: The text content of the book (truncated if very large).
-
-### `list_categories`
-List available categories (tags, authors, series, etc.).
-- **Arguments**:
-  - `category_type` (string): The type of category (e.g., `tags`, `authors`, `series`, `publisher`).
-- **Returns**: List of category names.
-
-### `check_library`
-Run a consistency check on the library database.
-- **Returns**: The report from the check command.
-
-### `get_library_stats`
-Get statistics about the library.
-- **Returns**: Dictionary with counts of books, authors, and tags.
+| Tool | Description | Arguments | Returns |
+|------|-------------|-----------|---------|
+| `search_books` | Search for books in the library. | `query` (string): Search query (e.g., `title:Python`) | List of books (`id`, `title`, `authors`) |
+| `get_book_details` | Get detailed metadata for a specific book. | `book_id` (int): Calibre book ID | Dictionary with full metadata |
+| `add_book` | Add a new file to the library. | `file_path` (string): Absolute path to file | Success message with new Book ID |
+| `convert_book` | Convert a book to a different format. | `book_id` (int), `output_format` (string) | Success message |
+| `delete_book` | Delete a book from the library permanently. | `book_id` (int) | Status message |
+| `export_book` | Export a book to a specific directory. | `book_id` (int), `output_dir` (string) | Status message |
+| `update_book` | Update book metadata. | `book_id` (int), `title` (str, opt), `authors` (str, opt) | Status message |
+| `manage_tags` | Add or remove tags from a book. | `book_id` (int), `add_tags` (list), `remove_tags` (list) | Status message |
+| `set_cover` | Set the cover image for a book. | `book_id` (int), `cover_path` (string) | Status message |
+| `get_cover_path` | Get the local path to the book's cover image. | `book_id` (int) | Absolute path to cover image |
+| `read_book_content` | Read the text content of a book. | `book_id` (int) | Text content (truncated if large) |
+| `list_categories` | List available categories. | `category_type` (string): e.g., `tags`, `authors` | List of category names |
+| `check_library` | Run a consistency check on the library. | None | Check report |
+| `get_library_stats` | Get statistics about the library. | None | Stats dictionary |
 
 ## Troubleshooting
 

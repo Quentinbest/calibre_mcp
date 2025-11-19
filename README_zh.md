@@ -10,6 +10,9 @@
 - **获取详情**：检索特定书籍的完整元数据，包括可用格式和文件路径。
 - **添加书籍**：从本地文件系统向您的库添加新书文件。
 - **转换书籍**：使用 Calibre 的 `ebook-convert` 工具在格式之间转换书籍（例如，EPUB 转 MOBI）。
+- **库管理**：删除书籍、导出书籍到特定目录。
+- **元数据管理**：更新书籍详情、管理标签、设置封面。
+- **内容与发现**：读取书籍内容、获取封面路径、列出分类、检查库健康状况。
 
 ## 前置要求
 
@@ -111,30 +114,22 @@ python3 server.py
 
 ## 工具参考
 
-### `search_books`
-在库中搜索书籍。
-- **参数**：
-  - `query` (string): 搜索查询。支持 Calibre 搜索语法（例如 `title:Python`, `author:Asimov`）。
-- **返回**：包含 `id`, `title`, 和 `authors` 的书籍列表。
-
-### `get_book_details`
-获取特定书籍的详细元数据。
-- **参数**：
-  - `book_id` (integer): 书籍的内部 Calibre ID。
-- **返回**：包含完整元数据（格式、标签、评论等）的字典。
-
-### `add_book`
-向库添加新文件。
-- **参数**：
-  - `file_path` (string): 要添加的文件的绝对路径。
-- **返回**：包含新书籍 ID 的成功消息。
-
-### `convert_book`
-将书籍转换为不同格式。
-- **参数**：
-  - `book_id` (integer): 要转换的书籍 ID。
-  - `output_format` (string): 目标格式（例如 `mobi`, `pdf`, `docx`）。
-- **返回**：成功消息。
+| 工具 | 描述 | 参数 | 返回 |
+|------|-------------|-----------|---------|
+| `search_books` | 在库中搜索书籍。 | `query` (string): 搜索查询 (例如 `title:Python`) | 书籍列表 (`id`, `title`, `authors`) |
+| `get_book_details` | 获取特定书籍的详细元数据。 | `book_id` (int): Calibre 书籍 ID | 包含完整元数据的字典 |
+| `add_book` | 向库添加新文件。 | `file_path` (string): 文件的绝对路径 | 包含新书籍 ID 的成功消息 |
+| `convert_book` | 将书籍转换为不同格式。 | `book_id` (int), `output_format` (string) | 成功消息 |
+| `delete_book` | 从库中永久删除书籍。 | `book_id` (int) | 状态消息 |
+| `export_book` | 将书籍导出到特定目录。 | `book_id` (int), `output_dir` (string) | 状态消息 |
+| `update_book` | 更新书籍元数据。 | `book_id` (int), `title` (str, 可选), `authors` (str, 可选) | 状态消息 |
+| `manage_tags` | 添加或移除书籍标签。 | `book_id` (int), `add_tags` (list), `remove_tags` (list) | 状态消息 |
+| `set_cover` | 设置书籍封面图片。 | `book_id` (int), `cover_path` (string) | 状态消息 |
+| `get_cover_path` | 获取书籍封面的本地路径。 | `book_id` (int) | 封面图片的绝对路径 |
+| `read_book_content` | 读取书籍的文本内容。 | `book_id` (int) | 文本内容（如果过大则截断） |
+| `list_categories` | 列出可用分类。 | `category_type` (string): 例如 `tags`, `authors` | 分类名称列表 |
+| `check_library` | 对库数据库运行一致性检查。 | 无 | 检查报告 |
+| `get_library_stats` | 获取关于库的统计信息。 | 无 | 统计字典 |
 
 ## 故障排除
 
