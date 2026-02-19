@@ -218,7 +218,18 @@ def export_book(book_id: int, output_dir: str) -> str:
     """
     return _export_book(book_id, output_dir)
 
-def _update_book(book_id: int, title: Optional[str] = None, authors: Optional[str] = None) -> str:
+def _update_book(
+    book_id: int, 
+    title: Optional[str] = None, 
+    authors: Optional[str] = None,
+    series: Optional[str] = None,
+    series_index: Optional[float] = None,
+    rating: Optional[int] = None,
+    publisher: Optional[str] = None,
+    pubdate: Optional[str] = None,
+    comments: Optional[str] = None,
+    languages: Optional[str] = None
+) -> str:
     # calibredb set_metadata id --field title:"New Title" --field authors:"Author Name"
     args = ["set_metadata", str(book_id)]
     
@@ -226,6 +237,20 @@ def _update_book(book_id: int, title: Optional[str] = None, authors: Optional[st
         args.extend(["--field", f"title:{title}"])
     if authors:
         args.extend(["--field", f"authors:{authors}"])
+    if series:
+        args.extend(["--field", f"series:{series}"])
+    if series_index is not None:
+        args.extend(["--field", f"series_index:{series_index}"])
+    if rating is not None:
+        args.extend(["--field", f"rating:{rating}"])
+    if publisher:
+        args.extend(["--field", f"publisher:{publisher}"])
+    if pubdate:
+        args.extend(["--field", f"pubdate:{pubdate}"])
+    if comments:
+        args.extend(["--field", f"comments:{comments}"])
+    if languages:
+        args.extend(["--field", f"languages:{languages}"])
         
     if len(args) == 2:
         return "No updates provided."
@@ -237,19 +262,40 @@ def _update_book(book_id: int, title: Optional[str] = None, authors: Optional[st
         return f"Error updating book: {str(e)}"
 
 @mcp.tool()
-def update_book(book_id: int, title: Optional[str] = None, authors: Optional[str] = None) -> str:
+def update_book(
+    book_id: int, 
+    title: Optional[str] = None, 
+    authors: Optional[str] = None,
+    series: Optional[str] = None,
+    series_index: Optional[float] = None,
+    rating: Optional[int] = None,
+    publisher: Optional[str] = None,
+    pubdate: Optional[str] = None,
+    comments: Optional[str] = None,
+    languages: Optional[str] = None
+) -> str:
     """
-    Update book metadata (title, authors).
+    Update book metadata.
     
     Args:
         book_id: The ID of the book.
         title: New title (optional).
         authors: New authors (optional, comma-separated).
+        series: Series name (optional).
+        series_index: Number in series (optional).
+        rating: Rating 1-5 (optional).
+        publisher: Publisher name (optional).
+        pubdate: Publication date (optional).
+        comments: Book description/comments (optional).
+        languages: Comma-separated languages (optional).
         
     Returns:
         Status message.
     """
-    return _update_book(book_id, title, authors)
+    return _update_book(
+        book_id, title, authors, series, series_index, 
+        rating, publisher, pubdate, comments, languages
+    )
 
 def _manage_tags(book_id: int, add_tags: Optional[List[str]] = None, remove_tags: Optional[List[str]] = None) -> str:
     # calibredb set_metadata id --field tags:+tag1,+tag2,-tag3
